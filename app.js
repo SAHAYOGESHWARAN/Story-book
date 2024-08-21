@@ -17,11 +17,11 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Handlebars
-app.engine('hbs', exphbs.engine({
-    defaultLayout: 'main',
-    extname: '.hbs'
-}))
+app.engine('.hbs', exphbs.engine({defaultLayout:'main',extname:'.hbs'}))
 app.set('view engine', 'hbs')
+
+//Routes
+app.use('/',require('./routes/index'))
 
 const PORT = process.env.PORT || 3000
 
