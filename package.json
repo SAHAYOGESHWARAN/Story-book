@@ -1,0 +1,11 @@
+{
+  "name": "story-book",
+  "version": "1.0.0",
+  "description": "App to create public and private stories",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "sahayogeshwaran",
+  "license": "ISC"
+}
