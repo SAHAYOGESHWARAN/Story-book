@@ -3,8 +3,8 @@ const passport =require('passport')
 const router = express.Router()
 
 //@desc Auth with Google
-//@route Get/auth/Google
-router.get('/Google',passport.authenticate('Google',{scope: ['profile']}))
+//@route Get/auth/google
+router.get('/google',passport.authenticate('google',{scope: ['profile']}))
     
 
 //@desc Google auth callback
