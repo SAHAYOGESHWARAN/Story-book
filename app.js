@@ -1,56 +1,68 @@
-const path =require('path')
-const express = require('express')
-const dotenv = require('dotenv')
-const morgan = require('morgan')
-const exphbs = require('express-handlebars')
-const passport =require('passport')
-const session =require('express-session')
-const connectDB = require('./config/db')
+const path = require('path');
+const express = require('express');
+const dotenv = require('dotenv');
+const morgan = require('morgan');
+const exphbs = require('express-handlebars');
+const passport = require('passport');
+const session = require('express-session');
+const connectDB = require('./config/db');
 
 // Load config
-dotenv.config({ path: './config/config.env' })
+dotenv.config({ path: './config/config.env' });
 
-//passport config
-const passportSetup = require('./config/passport')
+// Passport config
+require('./config/passport')(passport); // Initialize Passport configuration
 
-connectDB()
+// Connect to database
+connectDB();
 
-const app = express()
+const app = express();
 
 // Logging
 if (process.env.NODE_ENV === 'development') {
-    app.use(morgan('dev'))
+    app.use(morgan('dev'));
 }
 
-//static folder 
+// Static folder 
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 // Handlebars
-app.engine('.hbs', exphbs.engine({defaultLayout:'main',extname:'.hbs'}))
-app.set('view engine', 'hbs')
+app.engine('.hbs', exphbs.engine({ defaultLayout: 'main', extname: '.hbs' }));
+app.set('view engine', 'hbs');
 
-//Sessions 
+// Sessions 
 app.use(
     session({
-        secret:'keyboard cat',
+        secret: 'keyboard cat',
         resave: false,
         saveUninitialized: false,
     })
-)
+);
 
-//passport middleware
-app.use(passport.initialize())
-app.use(passport.session())
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
-//Routes
-app.use('/',require('./routes/index'))
-app.use('/auth',require('./routes/auth'))
+// Routes
+app.use('/', require('./routes/index'));
+app.use('/auth', require('./routes/auth'));
 
+// Auth Route for Google
+app.get('/auth/google', passport.authenticate('google', {
+    scope: ['profile', 'email']
+}));
 
-const PORT = process.env.PORT || 3000
+app.get('/auth/google/callback', 
+    passport.authenticate('google', { failureRedirect: '/' }),
+    (req, res) => {
+        // Successful authentication, redirect to dashboard.
+        res.redirect('/dashboard');
+    }
+);
+
+const PORT = process.env.PORT || 3000;
 
 app.listen(
     PORT,
     console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
-)
+);

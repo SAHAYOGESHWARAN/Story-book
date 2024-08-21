@@ -9,8 +9,9 @@ module.exports = function(passport) {
         callbackURL: '/auth/google/callback',
     },
     async (accessToken, refreshToken, profile, done) => {
+        // User finding or creation logic goes here
         console.log(profile);
-        // Implement logic for user lookup/creation here
+        done(null, profile); // This is just a placeholder. Implement user logic here.
     }));
 
     passport.serializeUser((user, done) => {
