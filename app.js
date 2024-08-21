@@ -23,6 +23,9 @@ app.engine('hbs', exphbs.engine({
 }))
 app.set('view engine', 'hbs')
 
+//Routes
+app.use('/',require('./routes/index'))
+
 const PORT = process.env.PORT || 3000
 
 app.listen(
