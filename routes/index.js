@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
     module.exports = router;
     
 
-//@desc Dashboars
+//@desc Dashboard
 //@route Get/
 router.get('/',(req,res)=>{
     res.render('dashboard', { title: 'Dashboard' });
