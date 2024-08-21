@@ -31,10 +31,18 @@ app.engine('.hbs', exphbs.engine({defaultLayout:'main',extname:'.hbs'}))
 app.set('view engine', 'hbs')
 
 //Sessions 
+app.use(
+    session({
+        secret:'keyboard cat',
+        resave: false,
+        saveUninitialized: false,
+    })
+)
 
 //passport middleware
 app.use(passport.initialize())
 app.use(passport.session())
+
 //Routes
 app.use('/',require('./routes/index'))
 
