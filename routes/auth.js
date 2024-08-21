@@ -2,6 +2,12 @@ const express = require ('express')
 const passport =require('passport')
 const router = express.Router()
 
+
+// Route for GET /login
+router.get('/login', (req, res) => {
+    res.render('login'); // Ensure 'login.hbs' or 'login.ejs' exists in your views folder
+});
+
 //@desc Auth with Google
 //@route Get/auth/google
 router.get('/google',passport.authenticate('google',{scope: ['profile']}))

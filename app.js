@@ -8,6 +8,7 @@ const passport = require('passport');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const connectDB = require('./config/db');
+const authRoutes = require('./routes/auth');
 
 // Load config
 dotenv.config({ path: './config/config.env' });
