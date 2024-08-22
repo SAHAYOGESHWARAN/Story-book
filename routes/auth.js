@@ -1,35 +1,28 @@
-const express = require('express');
-const passport = require('passport');
-const router = express.Router();
+const express = require('express')
+const passport = require('passport')
+const router = express.Router()
 
-// Route for GET /login
-router.get('/login', (req, res) => {
-    res.render('login'); // Ensure 'login.hbs' or 'login.ejs' exists in your views folder
-});
+// @desc    Auth with Google
+// @route   GET /auth/google
+router.get('/google', passport.authenticate('google', { scope: ['profile'] }))
 
-// @desc Auth with Google
-// @route GET /google
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-// @desc Google auth callback
-// @route GET/google/callback
+// @desc    Google auth callback
+// @route   GET /auth/google/callback
 router.get(
-    '/google/callback',
-    passport.authenticate('google', { failureRedirect: '/login' }),
-    (req, res) => {
-        res.redirect('/dashboard');
-    }
-);
+  '/google/callback',
+  passport.authenticate('google', { failureRedirect: '/' }),
+  (req, res) => {
+    res.redirect('/dashboard')
+  }
+)
 
-// @desc Logout user
-// @route GET /logout
+// @desc    Logout user
+// @route   /auth/logout
 router.get('/logout', (req, res, next) => {
-    req.logout((err) => {
-        if (err) { return next(err); }
-        req.session.destroy(() => {
-            res.redirect('/login');
-        });
-    });
-});
+  req.logout((error) => {
+      if (error) {return next(error)}
+      res.redirect('/')
+  })
+})
 
-module.exports = router;
+module.exports = router

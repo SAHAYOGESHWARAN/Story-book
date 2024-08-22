@@ -7,6 +7,7 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const connectDB = require('./config/db');
 
+
 // Load config
 dotenv.config({ path: './config/config.env' });
 
@@ -26,14 +27,14 @@ if (process.env.NODE_ENV === 'development') {
 app.engine('.hbs', exphbs.engine({ defaultLayout: 'main', extname: '.hbs' }));
 app.set('view engine', 'hbs');
 
-app.use('/auth', require('./routes/auth'));
 
-// Sessions
+
+/// Sessions
 app.use(
     session({
-        secret: 'keyboard cat',
-        resave: false,
-        saveUninitialized: false,
+      secret: 'keyboard cat',
+      resave: false,
+      saveUninitialized: false,
     })
 );
 
@@ -45,13 +46,19 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
-app.use('/auth', require('./routes/auth'));
+app.use('/', require('./routes/index'))
+app.use('/auth', require('./routes/auth'))
+
 
 // Add your other routes here
 app.get('/', (req, res) => {
     res.send('Homepage'); // This is just a placeholder
 });
 
-const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`));
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+
