@@ -1,20 +1,17 @@
-const path = require('path');
 const express = require('express');
-const mongoose=require('mongoose')
-const dotenv = require('dotenv');
-const morgan = require('morgan');
-const exphbs = require('express-handlebars');
+const path = require('path');
 const passport = require('passport');
 const session = require('express-session');
-const MongoStore = require('connect-mongo');
+const exphbs = require('express-handlebars');
+const dotenv = require('dotenv');
+const morgan = require('morgan');
 const connectDB = require('./config/db');
-const authRoutes = require('./routes/auth');
 
 // Load config
 dotenv.config({ path: './config/config.env' });
 
 // Passport config
-require('./config/passport')(passport); // Initialize Passport configuration
+require('./config/passport')(passport);
 
 // Connect to database
 connectDB();
@@ -26,50 +23,34 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
-// Static folder 
-app.use(express.static(path.join(__dirname, 'public')));
-
 // Handlebars
 app.engine('.hbs', exphbs.engine({ defaultLayout: 'main', extname: '.hbs' }));
 app.set('view engine', 'hbs');
 
-// Sessions 
+// Sessions
 app.use(
     session({
         secret: 'keyboard cat',
         resave: false,
         saveUninitialized: false,
-        store: new MongoStore({
-            mongoUrl: process.env.MONGO_URI,
-        }),
     })
 );
-
 
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Static folder
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Routes
-app.use('/', require('./routes/index'));
 app.use('/auth', require('./routes/auth'));
 
-// Auth Route for Google
-app.get('/auth/google', passport.authenticate('google', {
-    scope: ['profile', 'email']
-}));
-
-app.get('/auth/google/callback', 
-    passport.authenticate('google', { failureRedirect: '/' }),
-    (req, res) => {
-        // Successful authentication, redirect to dashboard.
-        res.redirect('/dashboard');
-    }
-);
+// Add your other routes here
+app.get('/', (req, res) => {
+    res.send('Homepage'); // This is just a placeholder
+});
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(
-    PORT,
-    console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
-);
+app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`));
