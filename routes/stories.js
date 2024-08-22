@@ -6,7 +6,7 @@ const Story = require('../models/story')
 
 // @desc     show add page
 // @route   GET /stories/add
-router.get('/add', ensureGuest, (req, res) => {
+router.get('/add', ensureAuth, (req, res) => {
   res.render('stories/add', {
     
   })
