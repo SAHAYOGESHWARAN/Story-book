@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const { ensureAuth } = require('../middleware/auth')
 
-const Story = require('../models/Story')
+const Story = require('../models/story')
 
 // @desc    Show add page
 // @route   GET /stories/add
