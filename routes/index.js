@@ -5,7 +5,7 @@ const { ensureAuth, ensureGuest } = require('../middleware/auth');
 // @desc Login/landing page
 // @route GET /
 router.get('/', ensureGuest, (req, res) => {
-    res.render('Login', { 
+    res.render('login', { 
         layout: 'login',
     });
 });
@@ -18,5 +18,5 @@ router.get('/dashboard', ensureAuth, (req, res) => {
     });
 });
 
-// Export the router only once
+// Export the router
 module.exports = router;
