@@ -22,10 +22,11 @@ const app = express();
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
-
 // Handlebars
 app.engine('.hbs', exphbs.engine({ defaultLayout: 'main', extname: '.hbs' }));
 app.set('view engine', 'hbs');
+
+app.use('/auth', require('./routes/auth'));
 
 // Sessions
 app.use(
