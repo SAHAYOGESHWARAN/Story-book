@@ -59,6 +59,13 @@ app.engine(
 );
 app.set('view engine', '.hbs');
 
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error('Unhandled Error:', err);
+  res.status(500).send('Internal Server Error');
+});
+
+
 // Sessions
 app.use(
   session({
